@@ -23,5 +23,6 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('commandes/', include('commandes.urls')),
     path('notifications/', include('notifications.urls')),
-    path('sendEmail/', include('sendEmail.urls'))
+    path('sendEmail/', include('sendEmail.urls')),
+    path('paiements/', include('paiement.urls'))
 ]

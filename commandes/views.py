@@ -1,9 +1,9 @@
 from rest_framework import viewsets
-from django_filters import rest_framework as filters
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
+from .filters import *
 from .serializers import *
 from .models import *
 from .policy import *
@@ -42,16 +42,8 @@ class CommandeViewset(viewsets.ModelViewSet):
         else:
             pass
 
-
-class LivraisonFilter(filters.FilterSet):
-    dateTime_livraison = filters.DateTimeFilter(label='dateTime_livraison', method="filter_dateTime_livraison")
-
-    class Meta:
-        model = Livraison
-        fields = ('etat', 'livreur', 'fd_paid', 'fournisseur_paid', 'dateTime_livraison')
-
-        def filter_dateTime_livraison(self, queryset, name, value):
-            return queryset.filter(commande__dateTime_livraison=value)
+    def perform_create(self, serializer):
+        serializer.save(etat=1, fournisseur=Fournisseur.objects.filter(user_id=self.request.user.id).first())
 
 
 class LivraisonViewset(viewsets.ModelViewSet):
@@ -81,6 +73,24 @@ class LivraisonViewset(viewsets.ModelViewSet):
         if getattr(instance, '_prefetched_objects_cache', None):
             instance._prefetched_objects_cache = {}
         return Response(serializer.data)
+
+    @action(methods=['PATCH'], detail=False, name='livreur_paiement')
+    def livreur_paiement(self, request, *args, **kwargs):
+        livreurId = request.data['livreurId']
+        livraisons = Livraison.objects.filter(livreur_id=livreurId)
+        for l in livraisons:
+            l.fd_paid = True
+            l.save()
+        return Response(list(livraisons))
+
+    @action(methods=['PATCH'], detail=False, name='fournisseur_paiement')
+    def fournisseur_paiement(self, request, *args, **kwargs):
+        fournisseurId = request.data['fournisseurId']
+        livraisons = Livraison.objects.filter(commande__fournisseur_id=fournisseurId)
+        for l in livraisons:
+            l.fournisseur_paid = True
+            l.save()
+        return Response(list(livraisons))
 
 class LivraisonLivreurViewset(viewsets.ViewSet):
     serializer_class = LivraisonSerializer

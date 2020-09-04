@@ -8,6 +8,7 @@ router.register(r'commandes', views.CommandeViewset, basename='commandes')
 router.register(r'livraisons', views.LivraisonViewset, basename='livraisons')
 router.register(r'livraisonsLivreur', views.LivraisonLivreurViewset, basename='livraisonsLivreur')
 
+
 urlpatterns = [
     path('', include(router.urls)),
 ]

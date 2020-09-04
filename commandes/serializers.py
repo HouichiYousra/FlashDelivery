@@ -18,6 +18,7 @@ class CommandeModerateurSerializer(serializers.ModelSerializer):
         model = Commande
         fields = ('etat',)
 
+
 class LivraisonSerializer(serializers.ModelSerializer):
     commande = CommandeSerializer(many=False, read_only=True)
     class Meta:

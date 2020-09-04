@@ -38,7 +38,7 @@ class LivraisonPolicy(AccessPolicy):
             "effect": "allow"
         },
         {
-            "action": ["update", "partial_update"],
+            "action": ["update", "partial_update", "livreur_paiement", "fournisseur_paiement"],
             "principal": ["group:administrateur"],
             "effect": "allow"
         },
