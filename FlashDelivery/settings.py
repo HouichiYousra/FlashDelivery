@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'notifications',
     'fcm_django',
     'sendEmail',
+    'corsheaders',
 ]
 
 SITE_ID = 1
@@ -59,6 +60,7 @@ SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -142,7 +144,10 @@ AUTH_USER_MODEL = 'users.User'
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'FlashDelivery.pagination.PageNumberWithPageSizePagination',
     'PAGE_SIZE': 10,
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
 }
 
 REST_AUTH_REGISTER_SERIALIZERS = {
@@ -163,3 +168,5 @@ EMAIL_HOST_PASSWORD = 'equipe4projet2cssilpassword'
 FCM_DJANGO_SETTINGS = {
         "FCM_SERVER_KEY": "AAAAE3RiMeI:APA91bH6YeFp9foURsfeLLcXY6qVgbE3IOqXiydreA9N05qTrapDyxhZJOFnHtb18MQWjbhIthgsvsOrHVl1di6-wfK33_NUMa1MuokWXbpTI1iGwvC0FpjPOCgqybey5-D7ARefhDBI"
 }
+
+CORS_ORIGIN_ALLOW_ALL = True

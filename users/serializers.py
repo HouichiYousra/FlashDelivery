@@ -1,8 +1,6 @@
-from allauth.account.utils import setup_user_email
 from rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 
-from users.adapters import CustomAccountAdapter
 from users.models import *
 
 
@@ -15,13 +13,13 @@ class CustomRegisterSerializer(RegisterSerializer):
         return data_dict
 
 class UserSerializer(serializers.ModelSerializer):
-    class meta:
+    class Meta:
         model = User
         fields = '__all__'
 
 
 class FournisseurSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False, read_only=True)
-    class meta:
-        model = User
+    class Meta:
+        model = Fournisseur
         fields = '__all__'
